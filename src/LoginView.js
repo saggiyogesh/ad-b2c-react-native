@@ -45,6 +45,7 @@ export default class LoginView extends PureComponent {
   }
 
   async onNavigationStateChangeAsync(navState) {
+  
     const { url, loading } = navState;
     const { uri: stateUri } = this.state;
 
@@ -54,6 +55,7 @@ export default class LoginView extends PureComponent {
     }
 
     const result = adService.getLoginFlowResult(url);
+    result.navURL = url;
 
     if (url.toLowerCase() !== stateUri.toLowerCase()) {
       await this._handleFlowResultAsync(result, stateUri);
@@ -113,6 +115,10 @@ export default class LoginView extends PureComponent {
       } else {
         this.props.onFail(reqResult.data);
       }
+    }
+
+    if(this.loginPolicy === this.passwordResetPolicy && result.navURL.indexOf('error_description') > -1){
+      this.props.onFail(result.data);
     }
   }
 
