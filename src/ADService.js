@@ -142,7 +142,7 @@ class ADService {
       const qs = Object.keys(params)
         .map((key) => `${encodeURIComponent(key)}=${encodeURIComponent(params[key])}`)
         .join('&');
-      uri += qs;
+      uri += `&${qs}`;
     }
     return uri;
   };
